@@ -5,6 +5,7 @@ import { findLastSuccess, openDownloadsDb, recordAttempt } from "./db";
 import {
 	appendToBuffer,
 	binDir,
+	explainDownloadFailure,
 	patterns,
 	readCachedAccounts,
 	spawnSteamCmd,
@@ -239,6 +240,18 @@ async function packModFiles(job: Job): Promise<void> {
 		"utf8",
 	);
 
+	// The content just moved to the vault, but SteamCMD still records it as
+	// installed here. Steam reuses chunks between Workshop items of the same
+	// game, so the next download of a mod that shares files tries to read from
+	// the files we took away and dies with "Missing game files". Nothing stays
+	// installed under ./bin, so the record never describes anything real.
+	await rm(
+		join(binDir, "steamapps", "workshop", `appworkshop_${job.appId}.acf`),
+		{
+			force: true,
+		},
+	);
+
 	settle(job, "DONE", vaultPath);
 }
 
@@ -304,7 +317,13 @@ function downloadMod(
 
 		// Catches download refusals that never reach the success line.
 		const failure = job.buffer.match(patterns.downloadFailed);
-		if (failure) settle(job, "ERROR", failure[1]?.trim() || "Download failed");
+		if (failure) {
+			settle(
+				job,
+				"ERROR",
+				failure[1] ? explainDownloadFailure(failure[1]) : "Download failed",
+			);
+		}
 	});
 
 	pty.onExit(({ exitCode }) => {

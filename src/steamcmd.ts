@@ -35,6 +35,21 @@ export const patterns = {
 	downloadFailed: /ERROR!\s*Download item[^\r\n]*failed\s*\(([^)]*)\)/i,
 };
 
+// SteamCMD's reasons are one word and say nothing about what to do next.
+const DOWNLOAD_FAILURES: Record<string, string> = {
+	failure:
+		"Steam could not complete the download - see bin/logs/workshop_log.txt for the reason",
+	"file not found": "No such Workshop item for this game",
+	timeout: "Steam timed out - try again",
+	"disk full": "Not enough disk space",
+	"access denied": "Steam denied access - the account may not own this game",
+};
+
+export function explainDownloadFailure(reason: string): string {
+	const known = DOWNLOAD_FAILURES[reason.trim().toLowerCase()];
+	return known ? `${known} (${reason.trim()})` : reason.trim();
+}
+
 // Prompts arrive split across chunks, so matching needs an accumulated tail.
 export const BUFFER_LIMIT = 4000;
 
