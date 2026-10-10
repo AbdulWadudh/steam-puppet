@@ -1,0 +1,27 @@
+{
+	"name": "steam-puppet",
+	"version": "0.1.0",
+	"module": "src/server.ts",
+	"type": "module",
+	"private": true,
+	"scripts": {
+		"setup": "bun run src/setup.ts",
+		"start": "bun run src/server.ts",
+		"dev": "bun --watch run src/server.ts",
+		"test": "bun run src/test-prompts.ts",
+		"typecheck": "tsc --noEmit",
+		"lint": "biome check .",
+		"format": "biome check --write .",
+		"check": "bun run typecheck && bun run lint && bun run test"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "^2.5.15",
+		"@types/bun": "latest"
+	},
+	"peerDependencies": {
+		"typescript": "^7"
+	},
+	"dependencies": {
+		"node-pty": "^1.1.0"
+	}
+}
