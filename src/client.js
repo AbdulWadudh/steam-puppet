@@ -1,8 +1,10 @@
 // ==UserScript==
 // @name         SteamPuppet
-// @namespace    https://github.com/steampuppet
+// @namespace    https://github.com/AbdulWadudh/steam-puppet
 // @version      4.0.0
 // @description  Download a Steam Workshop item through a local SteamCMD puppet
+// @author       AbdulWadudh
+// @icon         https://t0.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://store.steampowered.com&size=64
 // @match        *://steamcommunity.com/sharedfiles/filedetails/?id=*
 // @require      https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js
 // @require      https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.js
