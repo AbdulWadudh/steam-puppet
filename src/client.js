@@ -14,6 +14,9 @@
 // @run-at       document-idle
 // ==/UserScript==
 
+// Plain JavaScript, not TypeScript: Tampermonkey loads this file verbatim and
+// cannot compile it, and a build step for one file is not worth the gain.
+
 // Must match WS_PORT in .env.
 const SERVER_PORT = 8090;
 
